@@ -77,7 +77,7 @@ $fermSched=array(
 
 $sqlCreateFermStatus = "CREATE TABLE fermStatus(fermStatusId INTEGER PRIMARY KEY AUTOINCREMENT, eventID INTEGER, timeStamp INTEGER);";
 
-echo "Creating sitRep\r\n";
+echo "Creating sitRep<br />\r\n";
 $db->exec($sqlCreateSitRep);
 
 echo "Creating fermSchedules\n";
