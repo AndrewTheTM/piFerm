@@ -1,5 +1,17 @@
 <?php
 
+/* @Author Andrew Rohne
+ * @Date 6/2/2015
+ * @website www.runningonbeer.net
+ *
+ * This is a setup routine for the fermpi Raspberry Pi Fermentation Controller
+ *
+ * TODO: 
+	* add some error checking (the normal "or die("something")" does not work with these)
+	* add a delete/reset, with a warning
+ */
+
+unlink('db/fermpi.db');
 $db = new PDO('sqlite:db/fermpi.db');
 
 $sqlCreateSitRep = "CREATE TABLE sitrep(sitrepId INTEGER PRIMARY KEY AUTOINCREMENT, beverageName CHAR(50), statusText CHAR(20));";
@@ -65,15 +77,18 @@ $fermSched=array(
 
 $sqlCreateFermStatus = "CREATE TABLE fermStatus(fermStatusId INTEGER PRIMARY KEY AUTOINCREMENT, eventID INTEGER, timeStamp INTEGER);";
 
-echo "creating sitrep\n";
+echo 'creating sitrep\n';
 $db->exec($sqlCreateSitRep);
-echo "creating fermsched\n";
+
+echo 'creating fermsched\n';
 $db->exec($sqlCreateFermSchedules);
-echo "filling fermsched\n";
+
+echo 'filling fermsched\n';
 for($i = 0; $i < count($fermSched); $i++){
-	$sqlFermSchedule = "INSERT INTO fermSchedule (profileName, primaryTemp, primaryDays, diacetylRestTemp, diacetylRestDays, lagerTemp, lagerDays) VALUES ('".$fermSched[$i]["profileName"]."',".$fermSched[$i]["primaryTemp"].",".$fermSched[$i]["primaryDays"].",".$fermSched[$i]["diaRestTemp"].",".$fermSched[$i]["diaRestDays"].",".$fermSched[$i]["lagerTemp"].",".$fermSched[$i]["lagerDays"].");";
+	$sqlFermSchedule = "INSERT INTO fermSchedules (profileName, primaryTemp, primaryDays, diacetylRestTemp, diacetylRestDays, lagerTemp, lagerDays) VALUES ('".$fermSched[$i]["profileName"]."',".$fermSched[$i]["primaryTemp"].",".$fermSched[$i]["primaryDays"].",".$fermSched[$i]["diaRestTemp"].",".$fermSched[$i]["diaRestDays"].",".$fermSched[$i]["lagerTemp"].",".$fermSched[$i]["lagerDays"].");";
 	$db->exec($sqlFermSchedule);
 }
-echo "creating fermstat\n";
+
+echo 'creating fermstat\n';
 $db->exec($sqlCreateFermStatus);
 ?>
