@@ -65,13 +65,15 @@ $fermSched=array(
 
 $sqlCreateFermStatus = "CREATE TABLE fermStatus(fermStatusId INTEGER PRIMARY KEY AUTOINCREMENT, eventID INTEGER, timeStamp INTEGER);";
 
+echo "creating sitrep\n";
 $db->exec($sqlCreateSitRep) or die(print_r($db->errorInfo()));
+echo "creating fermsched\n";
 $db->exec($sqlCreateFermSchedules) or die(print_r($db->errorInfo()));
-
+echo "filling fermsched\n";
 for($i = 0; $i < count($fermSched); $i++){
 	$sqlFermSchedule = "INSERT INTO fermSchedule (profileName, primaryTemp, primaryDays, diacetylRestTemp, diacetylRestDays, lagerTemp, lagerDays) VALUES ('".$fermSched[$i]["profileName"]."',".$fermSched[$i]["primaryTemp"].",".$fermSched[$i]["primaryDays"].",".$fermSched[$i]["diaRestTemp"].",".$fermSched[$i]["diaRestDays"].",".$fermSched[$i]["lagerTemp"].",".$fermSched[$i]["lagerDays"].");";
 	$db->exec($sqlFermSchedule);
 }
-
+echo "creating fermstat\n";
 $db->exec($sqlCreateFermStatus) or die(print_r($db->errorInfo()));
 ?>
