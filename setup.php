@@ -17,6 +17,6 @@ $sqlCreateFermSchedules = "CREATE TABLE fermpi.fermSchedules(fermScheduleId INT 
 
 $sqlCreateFermStatus = "CREATE TABLE fermpi.fermStatus(fermStatusId INT PRIMARY KEY AUTOINCREMENT, eventID INT, timeStamp INT);";
 
-$db->exec($sqlCreateSitRep) or die("There was an error" . $db->error());
+$db->exec($sqlCreateSitRep) or die("There was an error" . $db->errorInfo());
 
 ?>
