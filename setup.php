@@ -83,12 +83,12 @@ $db->exec($sqlCreateSitRep);
 echo "<p>Creating fermSchedules</p>\n";
 $db->exec($sqlCreateFermSchedules);
 
-echo "<p>Filling fermSched<\p>\n";
+echo "<p>Filling fermSched</p>\n";
 for($i = 0; $i < count($fermSched); $i++){
 	$sqlFermSchedule = "INSERT INTO fermSchedules (profileName, primaryTemp, primaryDays, diacetylRestTemp, diacetylRestDays, lagerTemp, lagerDays) VALUES ('".$fermSched[$i]["profileName"]."',".$fermSched[$i]["primaryTemp"].",".$fermSched[$i]["primaryDays"].",".$fermSched[$i]["diaRestTemp"].",".$fermSched[$i]["diaRestDays"].",".$fermSched[$i]["lagerTemp"].",".$fermSched[$i]["lagerDays"].");";
 	$db->exec($sqlFermSchedule);
 }
 
-echo "<p>Creating fermStat<\p>\n";
+echo "<p>Creating fermStat</p>\n";
 $db->exec($sqlCreateFermStatus);
 ?>
