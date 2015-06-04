@@ -5,7 +5,8 @@ $fs->execute();
 $fermScheds = $fs->fetchAll();
 
 for($i=0;$i<count($fermScheds);$i++){
-	print_r($fermScheds[$i]);
+	//print_r($fermScheds[$i]);
+	echo $fermScheds[$i]["profileName"];
 	echo "<br />";
 }
 
