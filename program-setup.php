@@ -1,7 +1,7 @@
 <?php
 $db = new PDO('sqlite:db/fermpi.db');
 $fs = $db->prepare("SELECT profileName FROM fermSchedules;");
-$fermScheds = fs->fetchAll();
+$fermScheds = $fs->fetchAll();
 print_r($fermScheds);
 
 ?>
