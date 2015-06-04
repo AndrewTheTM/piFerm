@@ -7,6 +7,7 @@ print_r($fermScheds);
 ?>
 <html>
 <head>
+<script>
 function getProg(progName){
 	if(progName != ""){
 		if(window.XMLHttpRequest){
