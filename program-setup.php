@@ -2,6 +2,7 @@
 $db = new PDO('sqlite:db/fermpi.db');
 $fs = $db->prepare("SELECT profileName FROM fermSchedules;");
 $fermScheds = $fs->fetchAll();
+echo count($fermScheds);
 print_r($fermScheds);
 
 ?>
