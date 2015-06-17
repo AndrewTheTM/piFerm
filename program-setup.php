@@ -16,7 +16,7 @@ for($i=0;$i<count($fermScheds);$i++){
 <head>
 <script>
 function getProg(){
-	var progName = document.getElementById(fermSched).value;
+	var progName = document.getElementById("fermSched").value;
 	alert(progName);
 	if(progName != ""){
 		if(window.XMLHttpRequest){
