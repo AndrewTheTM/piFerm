@@ -1,6 +1,6 @@
 <?
 $db = new PDO('sqlite:db/fermpi.db');
-$fs = $db->prepare("SELECT profileName FROM fermSchedules");
+$fs = $db->prepare("SELECT fermScheduleId, profileName FROM fermSchedules");
 $fs->execute();
 $fermScheds = $fs->fetchAll();
 /*
@@ -35,13 +35,15 @@ function getProg(progName){
 </head>
 <body>
 
-<!-- <form>
+<form>
 	<select name="fermSched">
-		
-</form>-->
-<?php 
-			foreach($fermScheds as $profileName)
-				print_r($profileName);
+		<?php 
+			foreach($fermScheds as $profile)
+				print "<option value=\"".$profile["fermScheduleId"]."\">".$profile["profileName"]."</option>";
+				//print_r($profile);
 		?>
+	</select>
+</form>-->
+
 </body>
 </html>
