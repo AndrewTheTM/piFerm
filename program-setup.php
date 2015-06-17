@@ -3,14 +3,6 @@ $db = new PDO('sqlite:db/fermpi.db');
 $fs = $db->prepare("SELECT fermScheduleId, profileName FROM fermSchedules");
 $fs->execute();
 $fermScheds = $fs->fetchAll();
-/*
-for($i=0;$i<count($fermScheds);$i++){
-	//print_r($fermScheds[$i]);
-	echo $fermScheds[$i]["profileName"];
-	echo "<br />";
-}
-*/
-
 ?>
 <html>
 <head>
@@ -30,7 +22,7 @@ function getProg(){
 				alert(xmlhttp.responseText);
 				/*
 				xmlhttp.responseText = 
-					
+					[{"fermScheduleId":"1","0":"1","profileName":"Vienna Lager","1":"Vienna Lager","primaryTemp":"56","2":"56","primaryDays":"14","3":"14","diacetylRestTemp":"60","4":"60","diacetylRestDays":"2","5":"2","lagerTemp":"40","6":"40","lagerDays":"14","7":"14"}]
 					*/
 			}
 		}
@@ -41,14 +33,13 @@ function getProg(){
 }
 </script>
 </head>
-<body>
+<body onLoad="getProg();">
 
 <form>
 	<select id="fermSched" onChange="getProg();">
 		<?php 
 			foreach($fermScheds as $profile)
 				print "<option value=\"".$profile["fermScheduleId"]."\">".$profile["profileName"]."</option>\n";
-				//print_r($profile);
 		?>
 	</select>
 </form>
