@@ -37,11 +37,11 @@ function getProg(progName){
 
 <!-- <form>
 	<select name="fermSched">
-		<?php 
-			foreach($fermScheds as $profileName)
-				print $profileName;
-		?>
+		
 </form>-->
-
+<?php 
+			foreach($fermScheds as $profileName)
+				print_r $profileName;
+		?>
 </body>
 </html>
