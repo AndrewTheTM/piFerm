@@ -16,7 +16,7 @@ for($i=0;$i<count($fermScheds);$i++){
 <head>
 <script>
 function getProg(){
-	var progName = document.getElementById(fermSched);
+	var progName = document.getElementById(fermSched).value;
 	alert(progName);
 	if(progName != ""){
 		if(window.XMLHttpRequest){
@@ -40,7 +40,7 @@ function getProg(){
 <body>
 
 <form>
-	<select id="fermSched" onChange="getProg()>
+	<select name="fermSched" onChange="getProg()>
 		<?php 
 			foreach($fermScheds as $profile)
 				print "<option value=\"".$profile["fermScheduleId"]."\">".$profile["profileName"]."</option>";
