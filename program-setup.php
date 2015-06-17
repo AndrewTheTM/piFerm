@@ -28,6 +28,10 @@ function getProg(){
 			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
 				//document.getElementById("id").prop = xmlhttp.responseText;
 				alert(xmlhttp.responseText);
+				/*
+				xmlhttp.responseText = 
+					
+					*/
 			}
 		}
 		xmlhttp.open("GET","getProgram.php?q="+progName,true);
