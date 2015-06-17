@@ -40,7 +40,7 @@ function getProg(){
 <body>
 
 <form>
-	<select id="fermSched" onChange="getProg()>
+	<select id="fermSched" onChange="getProg();">
 		<?php 
 			foreach($fermScheds as $profile)
 				print "<option value=\"".$profile["fermScheduleId"]."\">".$profile["profileName"]."</option>\n";
