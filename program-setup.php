@@ -41,7 +41,7 @@ function getProg(progName){
 </form>-->
 <?php 
 			foreach($fermScheds as $profileName)
-				print_r $profileName;
+				print_r($profileName);
 		?>
 </body>
 </html>
