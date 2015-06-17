@@ -15,7 +15,9 @@ for($i=0;$i<count($fermScheds);$i++){
 <html>
 <head>
 <script>
-function getProg(progName){
+function getProg(){
+	var progName = document.getElementById(fermSched);
+	alert(progName);
 	if(progName != ""){
 		if(window.XMLHttpRequest){
 			xmlhttp = new XMLHttpRequest();
@@ -24,26 +26,28 @@ function getProg(progName){
 		}
 		xmlhttp.onreadystatechange = function(){
 			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
-				document.getElementById("id").prop = xmlhttp.responseText;
+				//document.getElementById("id").prop = xmlhttp.responseText;
+				alert(xmlhttp.responseText);
 			}
 		}
 		xmlhttp.open("GET","getProgram.php?q="+progName,true);
 		xmlhttp.send();
 	}
+	
 }
 </script>
 </head>
 <body>
 
 <form>
-	<select name="fermSched">
+	<select id="fermSched" onChange="getProg()>
 		<?php 
 			foreach($fermScheds as $profile)
 				print "<option value=\"".$profile["fermScheduleId"]."\">".$profile["profileName"]."</option>";
 				//print_r($profile);
 		?>
 	</select>
-</form>-->
+</form>
 
 </body>
 </html>
