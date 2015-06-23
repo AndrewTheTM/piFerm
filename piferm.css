@@ -20,7 +20,7 @@ body{
 .list-row{
 	/*background:#FF0000;*/
 	display: inline-block;
-	
+
 }
 
 .list-group{
@@ -42,9 +42,13 @@ body{
 .list-lower input{
 	width: 25;
 }
+
+.fsSpacer{
+	height: 20px;
+}
 /*
 .list-group{
-	
+
 
 
 .list-row {
