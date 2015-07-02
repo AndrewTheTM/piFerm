@@ -11,9 +11,45 @@ $cs->execute();
 $status = $cs->fetchAll();
 
 $busy = count($status);
-if($busy>0)
+if($busy>0){
+  if($status[0]["eventID"]==99){
+    $isBusy==False;
+    $holding==True;
+    
+  }
   $isBusy=True;
+  //TODO: There needs to be a special hold code and the program react appropriately
 
+  $currTime = time();
+  $busySince = $status[0]["timeStamp"];
+  $diffTime = $currTime - $status[0]["timeStamp"];
+
+  $dt = new DateTime("@$busySince");
+  $hrd = date_create($dt->format("Y-m-d H:i:s"),new DateTimeZone("UTC"))->setTimeZone(new DateTimeZone("America/New_York"))->format("m-d-Y H:i:s");
+
+  $fermBusyLine = "The fermenter has been busy since " . $hrd . "<br/>";
+  $busyDays = intval($diffTime / 24 / 3600);
+  $busyHours = intval($diffTime / 3600 - $busyDays * 24 + 0.5);
+  $fermBusyLine2 = "The fermenter has been running this program for " . $busyDays . " days and " . $busyHours . " hours.<br />";
+
+  $fsp = $db->prepare("SELECT fermScheduleId, profileName, primaryDays, diacetylRestDays, lagerDays FROM fermSchedules WHERE fermScheduleId=".$status[0]["eventID"]);
+  $fsp->execute();
+  $fermScheds = $fsp->fetchAll();
+
+  $enlapsedDays = intval(($diffTime / 24 / 3600)*100)/100;
+  $enlapsedHours = intval(($diffTime / 3600)*100)/100;
+  if($enlapsedDays <= $fermScheds[0]["primaryDays"]){
+    // currently in Primary
+    $remainHours = ($fermScheds[0]["primaryDays"] * 24) - $enlapsedHours;
+    $totRemainHours = ($fermScheds[0]["primaryDays"] + $fermScheds[0]["diacetylRestDays"] + $fermScheds[0]["lagerDays"]) * 24;
+
+    $enlStepPct = intval(($enlapsedHours/$remainHours) * 100) / 100;
+    $enlTotPct = intval(($enlapsedHours/$totRemainHours) * 100) / 100;
+
+    $fermBusyLine3 = "The fermenter is currently in PRIMARY.  It's been there for ".$enlapsedHours." hours and has ".$remainHours." hours remaining in the current portion.</br>";
+    $fermBusyLine3 .= "This is ".$enlStepPct."% of the current step and ".$enlTotPct."% of the entire process.";
+  }
+}
 
 // Should return the time in epoch seconds, which is what Python is looking for
 
@@ -58,7 +94,7 @@ if($busy>0)
     }
     xmlhttp2.onreadystatechange = function(){
       if(xmlhttp2.readyState == 4 && xmlhttp2.status == 200){
-        //TODO: reload page!
+        location.reload();
       }
     }
     xmlhttp2.open("POST","setStart.php",true);
@@ -67,12 +103,24 @@ if($busy>0)
     xmlhttp2.close;
 
   }
+
+  function removeProgram(){
+    if (confirm('Are you sure you want kill the current program? THIS CANNOT BE UNDONE')) {
+      console.log("remove program");
+      location.reload();
+    }
+  }
+
+  function adjustProgram(){
+    //TODO: move program forward or backward by adjusting the timestamp
+  }
   </script>
 </head>
-<body onload="getProg();">
+<body>
   <?php getHeader() ?>
 
   <?php if(!$isBusy){ ?>
+    <script> getProg(); </script>
     <form>
       <select id="fermSched" onChange="getProg();">
     		<?php
@@ -111,9 +159,19 @@ if($busy>0)
           </div>
         </div>
       </div>
+
+      <!-- TODO: hold temperature -->
     </form>
     <?php }else{ ?>
-      <p>The fermenter is busy!</p>
+      <p><h1>The fermenter is busy!</h1></p>
+      <p><?php
+        echo $fermBusyLine;
+        echo $fermBusyLine2;
+        echo $fermBusyLine3;
+
+       ?></p>
+      <form>
+        <img src="images/KillButton.png" onclick="removeProgram();" />
       <?php
         //TODO: fermenter program status and control
         /*

@@ -6,7 +6,7 @@
  *
  * This is a setup routine for the fermpi Raspberry Pi Fermentation Controller
  *
- * TODO: 
+ * TODO:
 	* add some error checking (the normal "or die("something")" does not work with these)
 	* add a delete/reset, with a warning
  */
@@ -27,7 +27,7 @@ $fermSched1=array(
 	"diaRestDays" => 2,
 	"lagerTemp" => 40,
 	"lagerDays" => 14);
-	
+
 // American Pre-prohibition Lager 50 14 60 2 34 42
 $fermSched2=array(
 	"profileName" => "American Pre-prohibition Lager",
@@ -67,7 +67,7 @@ $fermSched5=array(
 	"diaRestDays" => 2,
 	"lagerTemp" => 35,
 	"lagerDays" => 42);
-	
+
 $fermSched=array(
 	$fermSched1,
 	$fermSched2,
@@ -75,7 +75,7 @@ $fermSched=array(
 	$fermSched4,
 	$fermSched5);
 
-$sqlCreateFermStatus = "CREATE TABLE fermStatus(fermStatusId INTEGER PRIMARY KEY AUTOINCREMENT, eventID INTEGER, timeStamp INTEGER);";
+$sqlCreateFermStatus = "CREATE TABLE fermStatus(fermStatusId INTEGER PRIMARY KEY AUTOINCREMENT, eventID INTEGER, timeStamp INTEGER, holdTemp INTEGER);";
 
 echo "<p>Creating sitRep</p>\n";
 $db->exec($sqlCreateSitRep);
