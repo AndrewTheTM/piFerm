@@ -38,7 +38,6 @@ $srStatus = array("Primary", "Secondary", "Lager", "Carbonating","In Bottles");
   }
 
   function rmSitRep(id){
-    console.log(id);
     if(window.XMLHttpRequest){
       xmlhttp2 = new XMLHttpRequest();
     }else{
@@ -53,7 +52,24 @@ $srStatus = array("Primary", "Secondary", "Lager", "Carbonating","In Bottles");
     xmlhttp2.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp2.send("id="+id);
     xmlhttp2.close;
-    
+
+  }
+
+  function mvSitRep(id, mt){
+    if(window.XMLHttpRequest){
+      xmlhttp3 = new XMLHttpRequest();
+    }else{
+      xmlhttp3 = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp3.onreadystatechange = function(){
+      if(xmlhttp3.readyState == 4 && xmlhttp3.status == 200){
+        getSitRep();
+      }
+    }
+    xmlhttp3.open("POST","mvSitRep.php",true);
+    xmlhttp3.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp3.send("id="+id+"&mt="+mt);
+    xmlhttp3.close;
   }
 
   function getSitRep(){
@@ -72,7 +88,14 @@ $srStatus = array("Primary", "Secondary", "Lager", "Carbonating","In Bottles");
 
         var json1 = JSON.parse(xmlhttp1.responseText);
         for(var i=0;i<json1.length;i++){
-          document.getElementById("div"+json1[i]["statusText"]).innerHTML += json1[i]["beverageName"] + " <a href=\"#\" onClick=\"rmSitRep(" + json1[i]["sitrepId"] + ")\";><img src=\"/images/IconTrash.jpg\" /></a><br/>";
+          var inHTML = json1[i]["beverageName"] + " <a href=\"#\" onClick=\"rmSitRep(" + json1[i]["sitrepId"] + ")\";><img src=\"/images/IconTrash.jpg\" /></a>";
+          inHTML += " <a href=\"#\" onClick=\"mvSitRep(" + json1[i]["sitrepId"] + ",\'P\')\";><img src=\"/images/p.png\" /></a>";
+          inHTML += " <a href=\"#\" onClick=\"mvSitRep(" + json1[i]["sitrepId"] + ",\'S\')\";><img src=\"/images/s.png\" /></a>";
+          inHTML += " <a href=\"#\" onClick=\"mvSitRep(" + json1[i]["sitrepId"] + ",\'L\')\";><img src=\"/images/l.png\" /></a>";
+          inHTML += " <a href=\"#\" onClick=\"mvSitRep(" + json1[i]["sitrepId"] + ",\'C\')\";><img src=\"/images/c.png\" /></a>";
+          inHTML += " <a href=\"#\" onClick=\"mvSitRep(" + json1[i]["sitrepId"] + ",\'B\')\";><img src=\"/images/b.png\" /></a><br />";
+
+          document.getElementById("div"+json1[i]["statusText"]).innerHTML += inHTML;
         }
       }
     }
