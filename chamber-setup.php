@@ -11,13 +11,14 @@ $cs->execute();
 $status = $cs->fetchAll();
 
 $busy = count($status);
+$isBusy = False;
 if($busy>0){
   if($status[0]["eventID"]==99){
-    $isBusy==False;
-    $holding==True;
-    
+    $isBusy == False;
+    $holding == True;
+
   }
-  $isBusy=True;
+  $isBusy = True;
   //TODO: There needs to be a special hold code and the program react appropriately
 
   $currTime = time();
@@ -86,6 +87,8 @@ if($busy>0){
   }
 
   function startFerm(){
+    //document.getElementById("dimMe").show;
+    //document.getElementById("dimMe").zIndex="100";
     var fsid = document.getElementById("fermSched").value;
     if(window.XMLHttpRequest){
       xmlhttp2 = new XMLHttpRequest();
@@ -105,9 +108,23 @@ if($busy>0){
   }
 
   function removeProgram(){
+    //document.getElementById("dimMe").show;
+
     if (confirm('Are you sure you want kill the current program? THIS CANNOT BE UNDONE')) {
-      console.log("remove program");
-      location.reload();
+      if(window.XMLHttpRequest){
+        xmlhttp3 = new XMLHttpRequest();
+      }else{
+        xmlhttp3 = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp3.onreadystatechange = function(){
+        if(xmlhttp3.readyState == 4 && xmlhttp3.status == 200){
+          location.reload();
+        }
+      }
+      xmlhttp3.open("GET","rmFermProg.php",true);
+      xmlhttp3.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+      xmlhttp3.send();
+      xmlhttp3.close;
     }
   }
 
@@ -118,9 +135,8 @@ if($busy>0){
 </head>
 <body>
   <?php getHeader() ?>
-
+  <div id="dimMe"></div>
   <?php if(!$isBusy){ ?>
-    <script> getProg(); </script>
     <form>
       <select id="fermSched" onChange="getProg();">
     		<?php
@@ -159,7 +175,7 @@ if($busy>0){
           </div>
         </div>
       </div>
-
+      <script> getProg(); </script>
       <!-- TODO: hold temperature -->
     </form>
     <?php }else{ ?>
