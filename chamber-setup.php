@@ -37,8 +37,8 @@ if($busy>0){
   $fsp->execute();
   $fermScheds = $fsp->fetchAll();
 
-  $enlapsedDays = intval(($diffTime / 24 / 3600)*100)/100;
-  $enlapsedHours = intval(($diffTime / 3600)*100)/100;
+  $enlapsedDays = intval(($diffTime / 24 / 3600) * 100) / 100;
+  $enlapsedHours = intval(($diffTime / 3600) * 100) / 100;
   if($enlapsedDays <= $fermScheds[0]["primaryDays"]){
     // currently in Primary
     $remainHours = ($fermScheds[0]["primaryDays"] * 24) - $enlapsedHours;
@@ -49,10 +49,38 @@ if($busy>0){
 
     $fermBusyLine3 = "The fermenter is currently in PRIMARY.  It's been there for ".$enlapsedHours." hours and has ".$remainHours." hours remaining in the current portion.</br>";
     $fermBusyLine3 .= "This is ".$enlStepPct."% of the current step and ".$enlTotPct."% of the entire process.";
+  }else if($enlapsedDays <= $fermScheds[0]["primaryDays"] + $fermScheds[0]["diacetylRestDays"]){
+    // currently in Diacetyl Rest
+    $remainHours = (($fermScheds[0]["primaryDays"] + $fermScheds[0]["diacetylRestDays"]) * 24) - $enlapsedHours;
+    $totRemainHours = ($fermScheds[0]["primaryDays"] + $fermScheds[0]["diacetylRestDays"] + $fermScheds[0]["lagerDays"]) * 24;
+
+    $enlStepPct = intval(($enlapsedHours/$remainHours) * 100) / 100;
+    $enlTotPct = intval(($enlapsedHours/$totRemainHours) * 100) / 100;
+
+    $fermBusyLine3 = "The fermenter is currently in diacetyl rest.  It's been there for ".$enlapsedHours." hours and has ".$remainHours." hours remaining in the current portion.</br>";
+    $fermBusyLine3 .= "This is ".$enlStepPct."% of the current step and ".$enlTotPct."% of the entire process.";
+  }else if($enlapsedDays <= $fermScheds[0]["primaryDays"] + $fermScheds[0]["diacetylRestDays"] + $fermScheds[0]["lagerDays"]){
+    // currently in lager
+    $remainHours = (($fermScheds[0]["primaryDays"] + $fermScheds[0]["diacetylRestDays"] + $fermScheds[0]["lagerDays"]) * 24) - $enlapsedHours;
+    $totRemainHours = ($fermScheds[0]["primaryDays"] + $fermScheds[0]["diacetylRestDays"] + $fermScheds[0]["lagerDays"]) * 24;
+
+    $enlStepPct = intval(($enlapsedHours/$remainHours) * 100) / 100;
+    $enlTotPct = intval(($enlapsedHours/$totRemainHours) * 100) / 100;
+
+    $fermBusyLine3 = "The fermenter is currently lagering.  It's been there for ".$enlapsedHours." hours and has ".$remainHours." hours remaining in the current portion.</br>";
+    $fermBusyLine3 .= "This is ".$enlStepPct."% of the current step and ".$enlTotPct."% of the entire process.";
+  }else{
+    // past lager
+    $remainHours = 0;
+    $totRemainHours = 0;
+
+    $enlStepPct = 100;
+    $enlTotPct = 100;
+
+    $fermBusyLine3 = "The fermenter is lagering, although the lagering phase is complete.  It's been there for ".$enlapsedHours." hours and has ".$remainHours." hours remaining in the current portion.</br>";
+    $fermBusyLine3 .= "This is ".$enlStepPct."% of the current step and ".$enlTotPct."% of the entire process.";
   }
 }
-
-// Should return the time in epoch seconds, which is what Python is looking for
 
 ?>
 <html>
@@ -189,16 +217,11 @@ if($busy>0){
       <form>
         <img src="images/KillButton.png" onclick="removeProgram();" />
       <?php
-        //TODO: fermenter program status and control
+        //TODO: fermenter program control (other than killing)
         /*
-         * Tell the user that the fermenter is in use, with what, since when
-         * and how long in current step and entire program.
-         * Then give the user a chance to advance the program (which would adjust
-         * the timestamp by the amount necessary) or to drop the program altogether
-         * and to set the fermentation chamber to hold a value
+         * Give the user a chance to advance the program (which would adjust
+         * the timestamp by the amount necessary)
          */
-
-         //If you can read this, you don't need glasses.
          ?>
     <?php } ?>
 

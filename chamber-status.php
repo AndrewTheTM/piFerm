@@ -33,6 +33,9 @@ include("functions.php");
 <body onload="getStatus();">
   <?php getHeader() ?>
   <div class="fsSpacer"></div>
-  <div class="fermStatus" id="fermStatus"></div>
+  <div class="fermStatus" id="fermStatus">
+  <!-- start, current step, time remaining in step, time remaining in program -->
+  
+  </div>
 </body>
 </html>
