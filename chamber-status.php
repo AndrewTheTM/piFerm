@@ -16,21 +16,29 @@ $fermScheds = $fs->fetchAll();
 $currTime = time();
 $dur = $currTime - $currStat[0]["timeStamp"];
 
+$startDay = $currStat[0]["timeStamp"];
+
 $durDay = $dur / 3600 / 24;
 $currSetTemp = 50;
+
+$currStatus = "null";
 
 if($durDay<=$fermScheds[0]["primaryDays"]){
   //echo "In primary";
   $currSetTemp = $fermScheds[0]["primaryTemp"];
+  $currStatus = "In primary";
 }elseif($durDay<=($fermScheds[0]["primaryDays"]+$fermScheds[0]["diacetylRestDays"])){
-  echo "In diacetyl rest";
+  //echo "In diacetyl rest";
   $currSetTemp = $fermScheds[0]["diacetylRestTemp"];
+  $currStatus = "In diacetyl rest";
 }elseif($durDay<=($fermScheds[0]["primaryDays"]+$fermScheds[0]["diacetylRestDays"]+$fermScheds[0]["lagerDays"])){
-  echo "in Lager";
+  //echo "in Lager";
   $currSetTemp = $fermScheds[0]["lagerTemp"];
+  $currStatus = "In lager";
 }else{
-  echo "past lager";
+  //echo "past lager";
   $currSetTemp = $fermScheds[0]["lagerTemp"];
+  $currStatus = "Past Lager";
 }
 
 $currTempFile = fopen("current_temperature", "r");
@@ -69,6 +77,9 @@ $currTemp = fread($currTempFile,filesize("current_temperature"));
   <div class="fsSpacer"></div>
   <div class="fermStatus" id="fermStatus">
     <p>Currently running the <?php echo $fermScheds[0]["profileName"]; ?> program</p>
+    <p>Currently <?php echo $currStatus; ?></p>
+    <p>Started <?php $startDay; ?></p>
+    <p>Duration in days: <?php echo $durDay; ?></p>
     <p>Chamber is currently at <?php echo $currTemp; ?>&deg;F and set at <?php echo $currSetTemp; ?>&deg;F</p>
 
 
