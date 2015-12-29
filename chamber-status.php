@@ -16,7 +16,7 @@ $fermScheds = $fs->fetchAll();
 $currTime = time();
 $dur = $currTime - $currStat[0]["timeStamp"];
 
-$startDay = $currStat[0]["timeStamp"];
+$startDay = date('m/d/Y',$currStat[0]["timeStamp"]);
 
 $durDay = $dur / 3600 / 24;
 $currSetTemp = 50;
