@@ -22,19 +22,27 @@ $durDay = $dur / 3600 / 24;
 $currSetTemp = 50;
 
 $currStatus = "null";
+$stepDuration = 0;
+$remainInStep = 0;
 
 if($durDay<=$fermScheds[0]["primaryDays"]){
   //echo "In primary";
   $currSetTemp = $fermScheds[0]["primaryTemp"];
   $currStatus = "In primary";
+  $stepDuration = $fermScheds[0]["primaryDays"];
+  $remainInStep = $fermScheds[0]["primaryDays"] - $durDay;
 }elseif($durDay<=($fermScheds[0]["primaryDays"]+$fermScheds[0]["diacetylRestDays"])){
   //echo "In diacetyl rest";
   $currSetTemp = $fermScheds[0]["diacetylRestTemp"];
   $currStatus = "In diacetyl rest";
+  $stepDuration = $fermScheds[0]["diacetylRestDays"];
+  $remainInStep = ($fermScheds[0]["primaryDays"] + $fermScheds[0]["diacetylRestDays"]) - $durDay;
 }elseif($durDay<=($fermScheds[0]["primaryDays"]+$fermScheds[0]["diacetylRestDays"]+$fermScheds[0]["lagerDays"])){
   //echo "in Lager";
   $currSetTemp = $fermScheds[0]["lagerTemp"];
   $currStatus = "In lager";
+  $stepDuration = $fermScheds[0]["lagerDays"];
+  $remainInStep = ($fermScheds[0]["lagerDays"] + $fermScheds[0]["primaryDays"] + $fermScheds[0]["diacetylRestDays"]) - $durDay;
 }else{
   //echo "past lager";
   $currSetTemp = $fermScheds[0]["lagerTemp"];
@@ -77,9 +85,8 @@ $currTemp = fread($currTempFile,filesize("current_temperature"));
   <div class="fsSpacer"></div>
   <div class="fermStatus" id="fermStatus">
     <p>Currently running the <?php echo $fermScheds[0]["profileName"]; ?> program</p>
-    <p>Currently <?php echo $currStatus; ?></p>
-    <p>Started <?php echo $startDay; ?></p>
-    <p>Total duration in days: <?php echo $durDay; ?>, step duration:</p>
+    <p>Started on <?php echo $startDay; ?>, currently <?php echo $currStatus; ?></p>
+    <p>Total duration in days: <?php echo round($durDay, 2); ?>, step duration: <?php echo $stepDuration; ?>, remaining in the step: <?php echo $remainInStep;?></p>
     <p>Chamber is currently at <?php echo $currTemp; ?>&deg;F and set at <?php echo $currSetTemp; ?>&deg;F</p>
 
 
