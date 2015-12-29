@@ -78,8 +78,8 @@ $currTemp = fread($currTempFile,filesize("current_temperature"));
   <div class="fermStatus" id="fermStatus">
     <p>Currently running the <?php echo $fermScheds[0]["profileName"]; ?> program</p>
     <p>Currently <?php echo $currStatus; ?></p>
-    <p>Started <?php $startDay; ?></p>
-    <p>Duration in days: <?php echo $durDay; ?></p>
+    <p>Started <?php echo $startDay; ?></p>
+    <p>Total duration in days: <?php echo $durDay; ?>, step duration:</p>
     <p>Chamber is currently at <?php echo $currTemp; ?>&deg;F and set at <?php echo $currSetTemp; ?>&deg;F</p>
 
 
